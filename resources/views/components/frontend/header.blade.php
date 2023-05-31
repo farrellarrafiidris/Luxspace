@@ -66,7 +66,7 @@
                 <a
                   id="header-cart"
                   class="flex items-center justify-center w-8 h-8 text-black {{ \Route::current()->getName() == 'index' ? 'ms:text-white' : ''}}"
-                  href="{{ route('cart  ') }}"
+                  href="{{ route('cart') }}"
                 >
                   <svg
                     class="fill-current"
