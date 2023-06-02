@@ -72,9 +72,14 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ProductRequest $Request,Products $product)
     {
-        
+        $data = $Request->all();
+        $data['slug'] = Str::slug($Request->title);
+
+        $product->update($data);
+
+        return Redirect()->route('dashboard.product.index');
     }
 
     /**
