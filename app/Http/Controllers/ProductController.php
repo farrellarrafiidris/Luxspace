@@ -18,12 +18,15 @@ class ProductController extends Controller
 
         
         if(request()->ajax()) {
-            $query = Products::query();
 
+            $query = Products::query();
             return DataTables::of($query)
-            ->editColumn('price', function($item){
+            ->addColumn('action', function($item){
+
+                return '<a href="'. route('dashboard.product.edit',$item->id) . '" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-lg" >Edit</a>';
+            })->editColumn('price' , function($item){
                 return number_format($item->price);
-            })->make();
+            })->rawColumns(['action'])->make();
         }
         return view('pages.dasboard.product.index');
     }
@@ -61,9 +64,9 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Products $product)
     {
-        //
+        return view('pages.dasboard.product.edit', compact('product'));
     }
 
     /**
@@ -71,7 +74,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        
     }
 
     /**
