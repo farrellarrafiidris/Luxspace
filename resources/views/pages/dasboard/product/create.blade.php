@@ -1,6 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+
             <nav class="flex" aria-label="Breadcrumb">
                 <ol class="inline-flex items-center space-x-1 md:space-x-3">
                     <li class="inline-flex items-center">
@@ -15,6 +16,8 @@
                             Create Product
                         </div>
                     </li>
+                </ol>    
+            </nav>
         </h2>
     </x-slot>
 

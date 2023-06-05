@@ -22,8 +22,8 @@
                             Edit Product
                         </div>
                     </li>
-                </ol>
-            </nav>        
+                </ol>        
+            </nav>
         </h2>
     </x-slot>
 

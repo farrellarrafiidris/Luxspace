@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductRequest;
 use App\Models\Products;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Str;
 
@@ -23,7 +24,18 @@ class ProductController extends Controller
             return DataTables::of($query)
             ->addColumn('action', function($item){
 
-                return '<a href="'. route('dashboard.product.edit',$item->id) . '" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-lg" >Edit</a>';
+                return 
+                '<a href="'. route('dashboard.product.gallery.index',$item->id) . '" class="bg-pink-500 hover:bg-red-700 text-white font-bold py-2 px-4 mx-2 rounded shadow-lg" >Gallery</a>
+
+                <a href="'. route('dashboard.product.edit',$item->id) . '" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-lg" >Edit</a>
+                
+                <form class="inline-block" method="POST" action="'.route('dashboard.product.destroy' ,$item->id) . '">
+                '. method_field('delete') . csrf_field().'
+                <button class="bg-red-500 hover:bg-red-700 text-white font-bold mx-2 py-1.5 px-3 rounded shadow-lg " type="submit">
+                DELETE
+                </button>
+                </form>
+                ';
             })->editColumn('price' , function($item){
                 return number_format($item->price);
             })->rawColumns(['action'])->make();
@@ -85,8 +97,10 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Products $product)
     {
-        //
+
+        $product->delete();
+        return Redirect()->route('dashboard.product.index');
     }
 }
