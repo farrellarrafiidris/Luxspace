@@ -34,7 +34,7 @@ class ProductGalleryController extends Controller
 
             })->editColumn('is_featured' , function($item){
                 return $item->is_featured ? 'Yes' : 'No';
-            })->rawColumns(['action'])
+            })->rawColumns(['action','url'])
             ->make();
         }
         return view('pages.dasboard.gallery.index',compact('product'));
