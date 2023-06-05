@@ -37,15 +37,15 @@ class ProductGalleryController extends Controller
             })->rawColumns(['action','url'])
             ->make();
         }
-        return view('pages.dasboard.gallery.index',compact('product'));
+        return view('pages.dashboard.gallery.index',compact('product'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Products $product)
     {
-        //
+        return view('pages.dashboard.gallery.create', compact('product'));
     }
 
     /**

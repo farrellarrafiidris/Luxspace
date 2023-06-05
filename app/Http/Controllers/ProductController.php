@@ -40,7 +40,7 @@ class ProductController extends Controller
                 return number_format($item->price);
             })->rawColumns(['action'])->make();
         }
-        return view('pages.dasboard.product.index');
+        return view('pages.dashboard.product.index');
     }
 
     /**
@@ -48,7 +48,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('pages.dasboard.product.create');
+        return view('pages.dashboard.product.create');
     }
 
     /**
@@ -78,7 +78,7 @@ class ProductController extends Controller
      */
     public function edit(Products $product)
     {
-        return view('pages.dasboard.product.edit', compact('product'));
+        return view('pages.dashboard.product.edit', compact('product'));
     }
 
     /**
