@@ -11,7 +11,7 @@ class ProductsGallery extends Model
     use HasFactory,SoftDeletes;
 
     protected $fillable = [
-        'product_id','url','is_featured'
+        'product_id','url_name','is_featured'
     ];
 
     

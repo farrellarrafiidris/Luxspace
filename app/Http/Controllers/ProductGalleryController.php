@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductGalleryRequest;
+use App\Http\Requests\ProductRequest;
 use App\Models\Products;
 use App\Models\ProductsGallery;
 use Illuminate\Http\Request;
@@ -15,14 +17,14 @@ class ProductGalleryController extends Controller
      */
     public function index(Products $product)
     {
-         if(request()->ajax()) {
+        if(request()->ajax()) {
 
-            $query = ProductsGallery::query();
+            $query = ProductsGallery::query()->where('product_id', $product->id);
             return DataTables::of($query)
             ->addColumn('action', function($item){
                 return 
                 '
-                <form class="inline-block" method="POST" action="'.route('dashboard.product.destroy' ,$item->id) . '">
+                <form class="inline-block" method="POST" action="'.route('dashboard.gallery.destroy' ,$item->id) . '">
                 '. method_field('delete') . csrf_field().'
                 <button class="bg-red-500 hover:bg-red-700 text-white font-bold mx-2 py-1.5 px-3 rounded shadow-lg " type="submit">
                 DELETE
@@ -30,7 +32,7 @@ class ProductGalleryController extends Controller
                 </form>
                 ';
             })->editColumn('url' , function($item){
-                return '.<imag style="mac-widthL:150px" src="'.Storage::url($item->url).'"> </img>';
+                return '.<img style="mac-widthL:150px" src="'.Storage::url($item->url_name).'"> </img>';
 
             })->editColumn('is_featured' , function($item){
                 return $item->is_featured ? 'Yes' : 'No';
@@ -51,9 +53,22 @@ class ProductGalleryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProductGalleryRequest $request,Products $product)
     {
-        //
+        $files = $request->file('files');
+
+        if ($request->hasFile('files') ) {
+            
+            foreach($files as $file) {
+            $path = $file->store('public/gallery');
+
+            ProductsGallery::create([
+                'product_id'    => $product->  id,
+                'url_name'      => $path,
+            ]);
+            }
+        }
+        return redirect()->route('dashboard.product.gallery.index' ,$product->id);
     }
 
     /**
@@ -83,8 +98,10 @@ class ProductGalleryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(ProductsGallery $gallery)
     {
-        //
+        $gallery->delete();
+
+        return redirect()->route('dashboard.product.gallery.index' ,$gallery->product_id);
     }
 }
